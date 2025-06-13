@@ -1,17 +1,22 @@
-from fastapi import FastAPI, Query
-from pydantic import EmailStr
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 from db_pro import fetch
 import smtplib
 from email.mime.text import MIMEText
 
 app = FastAPI()
 
-# Sender details (use App Passwords)
+# Secure your credentials in environment variables or secrets in production
 SENDER_GMAIL = "pranavnt239@gmail.com"
 SENDER_PASSWORD = "sdgg ohan pozs gtcq"
 
+# Request model
+class ForgotPasswordRequest(BaseModel):
+    mobile_no: str
+
+# Email function
 def send_password_email(to_email, full_name, password):
-    subject = "🔐 Password Recovery - Your App"
+    subject = "🔐 Password Recovery - Satyukt App"
     body = f"""
     Dear {full_name},
 
@@ -24,7 +29,6 @@ def send_password_email(to_email, full_name, password):
     Best regards,  
     Satyukt Analytics Team
     """
-
     msg = MIMEText(body)
     msg["Subject"] = subject
     msg["From"] = SENDER_GMAIL
@@ -40,21 +44,24 @@ def send_password_email(to_email, full_name, password):
         print(f"Error sending email: {e}")
         return False
 
-@app.get("/forgot-password")
-def forgot_password(user_email: EmailStr = Query(..., description="The registered email of the user")):
-    # Step 1: Check if user email exists
+# FastAPI route
+@app.post("/forgot-password")
+def forgot_password(request: ForgotPasswordRequest):
+    mobile_no = request.mobile_no
+
+    # Step 1: Fetch user details
     user_info = fetch(
         "user_registration",
-        columns=["mobile_no", "full_name"],
-        email=user_email
+        columns=["email", "full_name"],
+        mobile_no=mobile_no
     )
 
     if not user_info or not user_info[0]:
-        return {"status": "failed", "message": "Email not found in the database."}
+        raise HTTPException(status_code=404, detail="Mobile number not found in the database.")
 
-    mobile_no, full_name = user_info[0]
+    email, full_name = user_info[0]
 
-    # Step 2: Fetch password using mobile_no
+    # Step 2: Fetch password
     password_info = fetch(
         "user_credentials",
         columns=["password"],
@@ -62,12 +69,12 @@ def forgot_password(user_email: EmailStr = Query(..., description="The registere
     )
 
     if not password_info or not password_info[0]:
-        return {"status": "failed", "message": "Password not found for this user."}
+        raise HTTPException(status_code=404, detail="Password not found for this user.")
 
     password = password_info[0][0]
 
     # Step 3: Send email
-    if send_password_email(user_email, full_name, password):
-        return {"status": "success", "message": "Password sent to your email."}
+    if send_password_email(email, full_name, password):
+        return {"status": "success", "message": "Password sent to your registered email."}
     else:
-        return {"status": "failed", "message": "Failed to send email. Try again later."}
+        raise HTTPException(status_code=500, detail="Failed to send email. Try again later.")
