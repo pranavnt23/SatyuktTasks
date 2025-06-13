@@ -1,0 +1,41 @@
+from db_pro import insert, exists
+
+def register_user(full_name, email, mobile_no, country_code):
+    # Check if mobile number already exists
+    if exists("user_registration", mobile_no=mobile_no):
+        return {
+            "status": "failed",
+            "message": "User with this mobile number already exists."
+        }
+    
+    # Check if email already exists
+    if exists("user_registration", email=email):
+        return {
+            "status": "failed",
+            "message": "User with this email ID already exists."
+        }
+
+    # Insert new user (timestamp handled automatically if DB column default is CURRENT_TIMESTAMP)
+    result = insert(
+        "user_registration",
+        full_name=full_name,
+        email=email,
+        mobile_no=mobile_no,
+        country_code=country_code,
+    )
+
+    if result[0][0] == 1:
+        return {
+            "status": "success",
+            "message": "User registered successfully."
+        }
+    else:
+        return {
+            "status": "failed",
+            "message": result[0][1]
+        }
+
+# Example usage
+if __name__ == "__main__":
+    user = register_user("Test User", "testuser@exmple.com", 9976334388, 91)
+    print(user)
