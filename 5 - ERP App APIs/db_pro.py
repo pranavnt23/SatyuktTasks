@@ -197,5 +197,39 @@ def update(table_name, conditions, **kwargs):
 
     return status
 
+import pymysql
+def delete(table_name, **conditions):
+    status = []
+    try:
+        db = pymysql.connect(host="dev.satyukt.com", user="shiyaam", password="Devwrite@123", db="erp_app")
+        cursor = db.cursor()
+
+        # Build the WHERE clause from conditions
+        condition_clause = ' AND '.join([f"{key} = %s" for key in conditions])
+        condition_values = list(conditions.values())
+
+        sql_query = f"DELETE FROM {table_name} WHERE {condition_clause}"
+
+        try:
+            cursor.execute(sql_query, condition_values)
+            db.commit()
+            if cursor.rowcount > 0:
+                status.append([1, "Deleted successfully"])
+            else:
+                status.append([0, "No rows matched the condition"])
+        except pymysql.MySQLError as e:
+            db.rollback()
+            status.append([0, f"MySQL error: {e.args[1]}"])
+        finally:
+            cursor.close()
+            db.close()
+
+    except pymysql.MySQLError as e:
+        status.append([0, f"Database error: {e.args[1]}"])
+    except Exception as e:
+        status.append([0, f"Error: {str(e)}"])
+
+    return status
+
 # t = update("7015_vendor_payment",{"clientID":74980},validity=0)[0]
 # update("api_hits",{"referral_code":329,"Date(date)":"2025-04-30"}, count=53)
