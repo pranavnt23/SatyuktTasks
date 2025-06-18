@@ -49,7 +49,7 @@ def add_product(product_id:int, product_name: str, unit_of_measure: str, cost_pe
     try:
         if not product_id or not product_name or not unit_of_measure or cost_per_unit <= 0:
             return {"status": "failed", "message": "Invalid product details."}
-
+    
         status = insert("product_details", product_id=product_id, product_name=product_name,
                         unit_of_measure=unit_of_measure,
                         cost_per_unit=cost_per_unit)
