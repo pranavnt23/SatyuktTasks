@@ -62,14 +62,14 @@ def add_product(product_id:int, product_name: str, unit_of_measure: str, cost_pe
         return {"status": "failed", "message": str(e)}
     
 if __name__ == "__main__":
-    result = view_product_details_for_user(1002)
+    """result = view_product_details_for_user(1002)
     print(json.dumps(result, indent=4))
     
     all_products = view_all_products()
-    print(json.dumps(all_products, indent=4))
+    print(json.dumps(all_products, indent=4))"""
     
-    """delete_result = delete_product(1)
-    print(json.dumps(delete_result, indent=4))"""
+    #delete_result = delete_product(1010)
+    #print(json.dumps(delete_result, indent=4))
     
     add_result = add_product(1010, "Product_demonstration", "kg", 100.0)
     print(json.dumps(add_result, indent=4))

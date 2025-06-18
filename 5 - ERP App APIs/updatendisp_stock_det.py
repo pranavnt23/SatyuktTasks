@@ -51,6 +51,6 @@ def display_stock_details():
 
 # Example usage
 if __name__ == "__main__":
-    """result = update_stock_quantity(1001, 120)
-    print(result)"""
+    result = update_stock_quantity(1002, 200)
+    print(result)
     display_stock_details()
