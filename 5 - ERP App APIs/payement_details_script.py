@@ -1,4 +1,4 @@
-from db_pro import insert
+from db_erp import insert
 import json
 
 # Function to insert a payment record

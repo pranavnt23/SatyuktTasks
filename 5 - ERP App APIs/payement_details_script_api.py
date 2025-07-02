@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Form
-from db_pro import insert
+from db_erp import insert
 
 app = FastAPI(title="💳 Payment Details API")
 

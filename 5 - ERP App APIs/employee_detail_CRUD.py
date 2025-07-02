@@ -1,4 +1,4 @@
-from db_pro import insert, fetch, delete
+from db_erp import insert, fetch, delete
 import json
 
 def display_employee_by_id(employee_id):

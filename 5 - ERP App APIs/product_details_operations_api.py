@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
-from db_pro import fetch, insert, delete, exists
+from db_erp import fetch, insert, delete, exists
 
 app = FastAPI(title="Product Management API")
 

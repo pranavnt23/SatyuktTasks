@@ -1,0 +1,56 @@
+import pymysql
+import json
+import numpy as np
+import reverse_geocoder as rg
+from collections import defaultdict
+
+def get_odisha_farm_ids():
+    db = pymysql.connect(
+        host="3.14.103.172",
+        user="readuser",
+        password="Secret@123",
+        db="dummy_api"
+    )
+    cursor = db.cursor()
+
+    print("🚀 Fetching farm_ids and polygon data...")
+    cursor.execute("""
+        SELECT id, polyinfo
+        FROM polygonStore
+        WHERE id IN (
+            SELECT DISTINCT farm_id FROM paymentGateway WHERE farm_id IS NOT NULL
+        );
+    """)
+    rows = cursor.fetchall()
+
+    coords_to_ids = defaultdict(list)
+
+    for farm_id, polyinfo_str in rows:
+        try:
+            if not polyinfo_str or not polyinfo_str.strip().startswith('{'):
+                continue
+
+            polyinfo_json = json.loads(polyinfo_str)
+            coordinates = polyinfo_json['geo_json']['geometry']['coordinates'][0]
+            lat, lng = coordinates[0][1], coordinates[0][0]
+            coords_to_ids[(lat, lng)].append(farm_id)
+
+        except Exception as e:
+            continue 
+
+    print("🔍 Performing batched reverse geocoding...")
+    coord_list = list(coords_to_ids.keys())
+    locations = rg.search(coord_list)
+
+    odisha_farm_ids = []
+
+    for idx, loc in enumerate(locations):
+        state = loc.get('admin1', '').strip().lower()
+        if state == "odisha":
+            odisha_farm_ids.extend(coords_to_ids[coord_list[idx]])
+
+    print(f"\n🌾 FARM IDs IN ODISHA ({len(odisha_farm_ids)} found):")
+    print(odisha_farm_ids)
+
+if __name__ == "__main__":
+    get_odisha_farm_ids()

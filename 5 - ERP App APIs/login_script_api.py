@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from db_pro import fetch
+from db_erp import fetch
 
 app = FastAPI(title="User Login API", version="1.0")
 

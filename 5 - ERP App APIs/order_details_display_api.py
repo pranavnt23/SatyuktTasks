@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
-from db_pro import fetch
+from db_erp import fetch
 from encryptdecrypt import decrypt_info
 
 from datetime import datetime

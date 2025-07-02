@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
-from db_pro import insert, fetch, delete
+from db_erp import insert, fetch, delete
 from datetime import date
 
 app = FastAPI(title="Employee CRUD API")

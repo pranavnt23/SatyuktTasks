@@ -1,4 +1,4 @@
-from db_pro import fetch
+from db_erp import fetch
 import smtplib
 from email.mime.text import MIMEText
 

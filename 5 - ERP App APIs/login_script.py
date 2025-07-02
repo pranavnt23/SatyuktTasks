@@ -1,4 +1,4 @@
-from db_pro import fetch
+from db_erp import fetch
 import json
 
 def login_user(mobile_no, password):

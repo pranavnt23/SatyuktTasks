@@ -61,7 +61,7 @@ def dec_key(e_key):
 print(en)
 #de = decrypt_info("AFE-OSzggvelRINEfV35LOlLhPcAKObOLbgZ3FA1BAI=")
 #print("bghgb: ",de)
-
-de = decrypt_info("jmWYjEUJyAanZoMvBWW3tQbQQN7ARUEUV6A3MxOQY9A=")
+"""
+de = decrypt_info("m_kcapM9mLO-DnP1OhokNFRscADpKfctT1-E3-LrZSM=")
 print("bghgb: ",de)
-print(type(de))"""
+print(type(de))

@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import EmailStr
-from db_pro import insert, exists, fetch, update
+from db_erp import insert, exists, fetch, update
 from encryptdecrypt import encrypt
 from datetime import datetime
 
@@ -9,7 +9,7 @@ app = FastAPI()
 @app.post("/register")
 def register_user(
     full_name: str,
-    email: EmailStr,          # ✅ Auto-validates email
+    email: EmailStr,        
     mobile_no: str,
     password: str,
     country_code: int = 91,

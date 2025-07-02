@@ -1,4 +1,4 @@
-from db_pro import fetch, update
+from db_erp import fetch, update
 
 def update_stock_quantity(product_id: int, quantity: int):
     # Step 1: Validate quantity
