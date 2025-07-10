@@ -13,16 +13,15 @@ for uid in user_ids:
     if cred and cred[0] and cred[0][0]:
         user_mobiles.append((uid, cred[0][0]))  # (user_id, mobile_no)
 
-
-# Step 3: Fetch polygon and payment info
+# Step 3: Fetch polygon (farm) and payment info
 polygon_rows = fetch("polygonStore", columns=["id", "area", "clientID"])
 paid_farm_rows = fetch("paymentGateway", columns=["farm_id"])
 paid_farm_ids = set(row[0] for row in paid_farm_rows if row[0])
 
-# Step 4: Create CSV header
-csv_data = [["Date of Registration", "Farmer Name", "Mobile Number", "Farms Added", "Paid Area", "Unpaid Area"]]
+# Step 4: Prepare CSV header
+csv_data = [["Date of Registration", "Farmer Name", "Mobile Number", "Farms Added", "Paid Farms", "Unpaid Farms"]]
 
-# Step 5: Loop through each user and fetch data
+# Step 5: Loop through each user and populate data
 for uid, mobile_no in user_mobiles:
     user_info = fetch("user_details", columns=["registration_date", "full_name", "mobile_no"], mobile_no=mobile_no)
     if user_info and user_info[0]:
@@ -30,25 +29,22 @@ for uid, mobile_no in user_mobiles:
     else:
         registration_date, full_name, number = "N/A", "N/A", "N/A"
 
-    # 🟡 Normalize types for comparison
     uid_str = str(uid)
 
-# 🟢 Filter farms belonging to this user
+    # Filter farms belonging to the user
     farms = [row for row in polygon_rows if str(row[2]) == uid_str]
+    farm_ids = [row[0] for row in farms]
 
-# 🟢 Paid area: only if farm_id exists in paid_farm_ids
-    paid_area = sum(float(row[1]) for row in farms if row[0] in paid_farm_ids and row[1] is not None)
+    # Count paid and unpaid farms
+    paid_count = sum(1 for fid in farm_ids if fid in paid_farm_ids)
+    unpaid_count = len(farm_ids) - paid_count
 
-    # 🔵 Unpaid area: farm_id not in paid set
-    unpaid_area = sum(float(row[1]) for row in farms if row[0] not in paid_farm_ids and row[1] is not None)
+    csv_data.append([registration_date, full_name, number, len(farms), paid_count, unpaid_count])
 
-
-    csv_data.append([registration_date, full_name, number, len(farms), paid_area, unpaid_area])
-
-# Step 6: Write to CSV in Downloads
+# Step 6: Write CSV to Downloads
 downloads_dir = os.path.join(os.path.expanduser("~"), "Downloads")
 os.makedirs(downloads_dir, exist_ok=True)
-file_path = os.path.join(downloads_dir, "SFGC_Farmer_Stats.csv")
+file_path = os.path.join(downloads_dir, "SFGC_Farmer_Stats_CountOnly.csv")
 
 with open(file_path, mode='w', newline='', encoding='utf-8') as f:
     writer = csv.writer(f)
