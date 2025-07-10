@@ -2,41 +2,28 @@ show databases;
 use erp_app;
 show tables;
 
-/**/
 
-/*select queries*/
-select * from user_registration;
-select * from user_credentials;
-select * from user_category_accountID;
+/*Create Tables*/
+CREATE TABLE payment_details (
+    user_id INT(4) UNSIGNED ZEROFILL,
+    transaction_id VARCHAR(50),
+    mode_of_payment VARCHAR(20),
+    product_id INT(11),
+    product_name VARCHAR(50),
+    quantity int,
+    date_of_payment datetime default current_timestamp
+);
+desc payment_details;
+drop table payment_details;
 
-select * from order_details;
-select * from stock_details;
-select * from product_details;
-select * from employee_details;
-select * from production_details;
+CREATE TABLE raw_materials(
+				material_name varchar(50),
+                material_id varchar(10),
+                entry_date datetime default CURRENT_TIMESTAMP,
+                quantity int(6));
+                
+ALTER TABLE raw_materials add column paid_date datetime default current_timestamp;
 
-
-/*delete queries*/
-delete from user_registration where email='testuser@example.com';
-delete from user_credentials where user_id=0006;
-delete from user_category_accountID where userID=5;
-DELETE FROM order_details;
-
-
-/*dec commands*/
-desc user_category_accountID;
-desc production_details;
-desc employee_details;
-
-
-SET SQL_SAFE_UPDATES = 0;
-
-select * from stock_details;
-ALTER TABLE stock_details 
-MODIFY COLUMN product_id INT NOT NULL NOT AUTO_INCREMENT,
-ADD PRIMARY KEY (product_id);
-
-ALTER TABLE product_details MODIFY product_id INT NOT NULL;
 
 
 /*Inserting queries*/
@@ -104,4 +91,23 @@ VALUES
 (1007, 'Vermicompost', 200, 'ongoing'),
 (1008, 'Liquid Seaweed Extract', 60, 'ongoing'),
 (1009, 'Tractor Engine Oil', 40, 'ongoing');
+
+INSERT INTO payment_details (user_id, transaction_id, mode_of_payment, product_name, product_id, quantity)
+VALUES 
+(0007, 'TXN9087AB123', 'UPI', 'Organic Fertilizer', 1000, 5),
+(0009, 'TXN5643CD456', 'Credit Card', 'Neem Pesticide', 1001, 3);
+
+INSERT INTO raw_materials (material_name, material_id, quantity)
+VALUES
+('Urea', 'RM001', 50),
+('Potash', 'RM002', 30),
+('Gypsum', 'RM003', 45);
+
+INSERT INTO employee_details 
+(employee_id, full_name, email, designation, date_of_joining) 
+VALUES 
+(108, 'John Snow', 'johnsnow@example.com', 'Manager', '2025-07-02 13:19:21');
+
+INSERT INTO product_details (product_id, product_name, unit_of_measure, cost_per_unit)
+VALUES (1009, 'Tractor Engine Oil', 'litre', 55);
 

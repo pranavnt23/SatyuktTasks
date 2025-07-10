@@ -1,4 +1,3 @@
-create database fms_app;
 use fms_app;
 
 create table user_registration (
@@ -18,13 +17,20 @@ create table user_credentials (
 );
 
 create table product_details (
-    product_id int(5) unsigned zerofill auto_increment,
-    user_id int(3) unsigned zerofill,
+    user_id int(3),
+    product_id int(5) unsigned auto_increment,
     product_name varchar(50),
     quantity int,
     price decimal(10,2),
     timestamp timestamp default current_timestamp,
-    foreign key (user_id) references user_credentials(user_id)
-);
+    unique key (product_id)
+) auto_increment=100;
+drop table product_details;
+
+show tables;
+
+desc product_details;
+desc user_registration;
+desc user_credentials;
 
 

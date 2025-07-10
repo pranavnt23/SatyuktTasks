@@ -5,23 +5,22 @@ show tables;
 /*select queries*/
 select * from user_registration;
 select * from user_credentials;
-select * from user_category_accountID;
 
-select * from order_details;
-select * from stock_details;
-select * from product_details;
+desc production_details;
 select * from employee_details;
-select * from production_details;
+select * from payment_details;
+select * from raw_materials;
 
+SET SQL_SAFE_UPDATES=0;
 
 /*delete queries*/
-delete from user_registration where email='testuser@example.com';
-delete from user_credentials where user_id=0006;
-delete from user_category_accountID where userID=5;
+delete from user_registration where mobile_no=9976334382;
+delete from payment_details where user_id=1;
+delete from raw_materials where material_id='RM005';
 DELETE FROM order_details;
 
 
-/*dec commands*/
+/*desc commands*/
 desc user_category_accountID;
-desc production_details;
+desc product_details;
 desc employee_details;
