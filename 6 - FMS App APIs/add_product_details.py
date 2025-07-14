@@ -25,8 +25,8 @@ def add_product(user_id: int, product_name: str, quantity: int, price: float):
 # Example
 if __name__ == "__main__":
     response = add_product(
-        user_id=1,
-        product_name="Sprinkler",
+        user_id=2,
+        product_name="Drip Kit",
         quantity=50,
         price=600.00
     )

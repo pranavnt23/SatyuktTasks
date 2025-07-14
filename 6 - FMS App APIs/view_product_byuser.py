@@ -32,5 +32,5 @@ def view_products_by_user(user_id: int):
 
 # Example
 if __name__ == "__main__":
-    result = view_products_by_user(1)
+    result = view_products_by_user(2)
     print(json.dumps(result, indent=4))

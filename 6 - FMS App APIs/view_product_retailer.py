@@ -3,7 +3,6 @@ import json
 
 def view_all_products():
     try:
-        # Fetch all rows with full columns
         product_data = fetch("product_details")
 
         if not product_data:

@@ -78,7 +78,7 @@ if __name__ == "__main__":
     response = register_user(
         full_name="Test User2",
         email="g49rac.cit.rid3201@gmail.com",
-        mobile_no=9976334383,
+        mobile_no=9976334385,
         country_code=91,
         password="securepassword123",
         category="Seller"  
