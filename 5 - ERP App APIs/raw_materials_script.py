@@ -79,9 +79,30 @@ def update_raw_material(material_id: str, quantity: int):
     except Exception as e:
         return {"status": "failed", "message": str(e)}
 
+# Function to delete a raw material
+def delete_raw_material(material_id: str):
+    try:
+        if not material_id:
+            return {"status": "failed", "message": "Material ID is required."}
+
+        if not exists("raw_materials", material_id=material_id):
+            return {"status": "failed", "message": "Raw material with this ID does not exist."}
+
+        from db_erp import delete  # assuming you have a delete function
+
+        status = delete("raw_materials", material_id=material_id)
+        if status[0][0] == 1:
+            return {"status": "success", "message": "Raw material deleted successfully."}
+        else:
+            return {"status": "failed", "message": status[0][1]}
+    except Exception as e:
+        return {"status": "failed", "message": str(e)}
+
+
 if __name__ == "__main__":
     
     #print(json.dumps(view_raw_materials(), indent=4))
     #print(json.dumps(view_raw_materials_by_id("RM001"), indent=4))
     #print(json.dumps(add_raw_material("Neem Oil", "RM004", 50), indent=4))
-    print(json.dumps(update_raw_material("RM004", 60), indent=4))
+    #print(json.dumps(update_raw_material("RM004", 60), indent=4))
+    print(json.dumps(delete_raw_material("RM009"), indent=4))

@@ -9,7 +9,6 @@ def get_user_category(user_id: int):
         columns=["user_name"],
         user_id=user_id
     )
-    
     if not user_cred or not user_cred[0]:
         return None
 
@@ -64,5 +63,5 @@ def view_tasks(user_id: int):
 
 
 if __name__ == "__main__":
-    result = view_tasks(12)
+    result = view_tasks(6)
     print(json.dumps(result, indent=4))

@@ -111,3 +111,8 @@ VALUES
 INSERT INTO product_details (product_id, product_name, unit_of_measure, cost_per_unit)
 VALUES (1009, 'Tractor Engine Oil', 'litre', 55);
 
+ALTER TABLE product_details
+MODIFY product_id INT(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE product_details AUTO_INCREMENT = 1000;
+
+

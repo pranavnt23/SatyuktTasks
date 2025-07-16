@@ -43,7 +43,7 @@ def delete_product(id:int):
         delete("product_details", product_id=id)
         return {"status": "success", "message": "Product deleted successfully."}
     except Exception as e:
-        return {"status": "failed", "message": str(e)}
+        return {"status": "failed", "message": str(e)}  
     
 def add_product(product_id:int, product_name: str, unit_of_measure: str, cost_per_unit: float):
     try:

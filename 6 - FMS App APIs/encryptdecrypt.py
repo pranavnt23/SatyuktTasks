@@ -57,11 +57,11 @@ def dec_key(e_key):
     else:
         return 0
 
-"""en=encrypt(str(5),str(6203707621),str(454545))
-print(en)
-#de = decrypt_info("AFE-OSzggvelRINEfV35LOlLhPcAKObOLbgZ3FA1BAI=")
-#print("bghgb: ",de)
-"""
-de = decrypt_info("m_kcapM9mLO-DnP1OhokNFRscADpKfctT1-E3-LrZSM=")
+#en=encrypt(str(5),str(6203707621),str(454545))
+#print(en)
+de = decrypt_info("NzClCzhwgRWzvkCi4xsAJ92mGHljW9CmhKrBdgqI-jw=")
 print("bghgb: ",de)
-print(type(de))
+
+"""de = decrypt_info("m_kca00pM9mLO-DnP1OhokNFRscADpKfctT1-E3-LrZSM=")
+print("bghgb: ",de)
+print(type(de))"""

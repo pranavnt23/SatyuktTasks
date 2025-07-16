@@ -1,0 +1,38 @@
+"""
+Created on Fri Aug 26 18:58:17 2022
+
+@author: purvahattekar
+"""
+
+import pandas as pd
+import requests
+import json
+
+key = "GvvIsppz5AGglxNgEGos_Fg4EhboPGc0pMBsKbGANPw="
+
+path = "/Users/jothirupa/Projects/1000/micro_v2/Data/KML_files/merged_kml_coordinates.csv"
+df=pd.read_csv(path)
+
+
+for i in range(0, len(df)):
+    print(i)
+    name = df["Name"][i]
+    name = "MHAURICS41326"
+    print(df["Coordinates"][i])
+    coord = str(df["Coordinates"][i])
+    print(coord)
+    link = "https://micro.satyukt.com/postjson2?key="+key+"&name="+name+"&coordinates="+coord+"&croptype=Cotton&cropage=&phone_num=&District=&State=&category=farm"
+    
+    # print(link)
+    t = requests.get(link)
+    # print("\n\n",t.content)
+    
+    data_dict = t.json()
+    
+    farm_id = data_dict["ID"]
+    farm_name = data_dict["name"]
+    
+    print("farm_id:",farm_id)
+    print("farm_name:",farm_name)
+    print("=======================")
+    break
