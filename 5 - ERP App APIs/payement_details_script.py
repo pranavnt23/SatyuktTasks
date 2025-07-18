@@ -1,4 +1,4 @@
-from db_erp import insert
+from db_erp import insert, fetch
 import json
 
 # Function to insert a payment record
@@ -25,8 +25,27 @@ def insert_payment(user_id: int, transaction_id: str, mode_of_payment: str, prod
     except Exception as e:
         return {"status": "failed", "message": str(e)}
 
+
+# ✅ Function to display all payment details
+def display_all_payment_details():
+    try:
+        payments = fetch("payment_details")
+        if not payments:
+            return {"status": "success", "data": [], "message": "No payment records found."}
+
+        payment_list = []
+        for payment in payments:
+            payment_list.append(payment)
+
+        return {"status": "success", "data": payment_list}
+
+    except Exception as e:
+        return {"status": "failed", "message": str(e)}
+
+
 if __name__ == "__main__":
-    result = insert_payment(
+    # Insert a payment record
+    """insert_result = insert_payment(
         user_id=1,
         transaction_id="TXN20240612001",
         mode_of_payment="UPI",
@@ -34,4 +53,10 @@ if __name__ == "__main__":
         product_id=1001,
         quantity=3
     )
-    print(json.dumps(result, indent=4))
+    print("INSERT PAYMENT RESULT:")
+    print(json.dumps(insert_result, indent=4))"""
+
+    # Display all payment records
+    display_result = display_all_payment_details()
+    print("\nALL PAYMENT DETAILS:")
+    print(json.dumps(display_result, indent=4))

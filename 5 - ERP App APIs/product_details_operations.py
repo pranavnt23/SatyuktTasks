@@ -35,6 +35,19 @@ def view_all_products():
     except Exception as e:
         return {"status": "failed", "message": str(e)}
     
+def list_all_product_names():
+    try:
+        pr_details = fetch("product_details", columns=["product_name"])
+        if not pr_details:
+            return {"status": "success", "data": [], "message": "No products found."}
+        
+        product_names = [product[0] for product in pr_details]
+        
+        return {"status": "success", "data": product_names}
+    
+    except Exception as e:
+        return {"status": "failed", "message": str(e)}
+    
 def delete_product(id:int):
     try:
         ex=exists("product_details",product_id=id)
@@ -71,5 +84,8 @@ if __name__ == "__main__":
     #delete_result = delete_product(1010)
     #print(json.dumps(delete_result, indent=4))
     
-    add_result = add_product(1010, "Product_demonstration", "kg", 100.0)
-    print(json.dumps(add_result, indent=4))
+    #add_result = add_product(1010, "Product_demonstration", "kg", 100.0)
+    #print(json.dumps(add_result, indent=4))
+
+    product_names_result = list_all_product_names()
+    print(json.dumps(product_names_result, indent=4))
