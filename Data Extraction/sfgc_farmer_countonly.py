@@ -4,22 +4,15 @@ from datetime import datetime
 from db_pro import fetch
 
 def export_sf_gc_farmer_stats_optimized():
-    print("🚀 Starting export process...")
-
-    # Step 1: Get all user_ids under account_id 6004
     user_id_rows = fetch("userID_to_accountID", columns=["user_id"], account_id=6004)
     user_ids = {str(row[0]) for row in user_id_rows if row and row[0]}
-    print(f"✅ Total Users Found: {len(user_ids)}")
 
-    # Step 2: Bulk fetch user_credentials & user_details
     credentials = fetch("user_credentials", columns=["user_id", "user_name"])
     cred_map = {str(row[0]): row[1] for row in credentials if row and row[0] and str(row[0]) in user_ids}
-    print(f"✅ Credentials mapped: {len(cred_map)}")
 
     user_details = fetch("user_details", columns=["mobile_no", "registration_date", "full_name"])
     details_map = {row[0]: (row[1], row[2]) for row in user_details}
 
-    # Step 3: Fetch polygonStore and paymentGateway
     polygon_rows = fetch("polygonStore", columns=["id", "area", "clientID"])
     farms_by_client = {}
     for pid, area, client_id in polygon_rows:
@@ -28,9 +21,7 @@ def export_sf_gc_farmer_stats_optimized():
 
     paid_farm_rows = fetch("paymentGateway", columns=["farm_id"])
     paid_farm_ids = {row[0] for row in paid_farm_rows if row and row[0]}
-    print(f"✅ Total Paid Farms: {len(paid_farm_ids)}")
 
-    # Step 4: Prepare CSV
     csv_data = [["Date of Registration", "Farmer Name", "Mobile Number", "Farms Added", "Paid Farms", "Unpaid Farms"]]
 
     for uid_str, mobile_no in cred_map.items():
@@ -42,7 +33,6 @@ def export_sf_gc_farmer_stats_optimized():
 
         csv_data.append([reg_date, full_name, mobile_no, len(farm_ids), paid_count, unpaid_count])
 
-    # Step 5: Save CSV
     downloads_dir = os.path.join(os.path.expanduser("~"), "Downloads")
     os.makedirs(downloads_dir, exist_ok=True)
 
@@ -53,7 +43,7 @@ def export_sf_gc_farmer_stats_optimized():
         writer = csv.writer(f)
         writer.writerows(csv_data)
 
-    print(f"✅ CSV exported to: {file_path}")
+    print(f"CSV exported to: {file_path}")
 
 if __name__ == "__main__":
     export_sf_gc_farmer_stats_optimized()

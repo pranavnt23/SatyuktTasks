@@ -9,7 +9,7 @@ def login_user(mobile_no, password):
         return {"status": "failed", "message": "Password is required."}
 
     # 2. Validate user credentials
-    user_result = fetch(
+    user_result = fetch(    
         "user_credentials",
         columns=["user_id", "api_key"],
         user_name=mobile_no,

@@ -88,7 +88,7 @@ def delete_raw_material(material_id: str):
         if not exists("raw_materials", material_id=material_id):
             return {"status": "failed", "message": "Raw material with this ID does not exist."}
 
-        from db_erp import delete  # assuming you have a delete function
+        from db_erp import delete 
 
         status = delete("raw_materials", material_id=material_id)
         if status[0][0] == 1:
